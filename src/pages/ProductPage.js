@@ -6,7 +6,7 @@ import Skeleton from 'react-loading-skeleton'
 
 import { cartActions } from '../redux/reducer/cartSlice'
 
-const Product = () => {
+const ProductPage = () => {
   const { id } = useParams()
   const [product, setProduct] = useState({})
   const [loading, setLoading] = useState(false)
@@ -90,4 +90,4 @@ const Product = () => {
   )
 }
 
-export default Product
+export default ProductPage

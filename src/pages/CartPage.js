@@ -3,9 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { cartActions } from '../redux/reducer/cartSlice'
 
-const Cart = () => {
+const CartPage = () => {
   const carts = useSelector(state => state.carts)
-  console.log({ carts })
   const dispatch = useDispatch()
 
   const handleAddToCart = cart => {
@@ -17,8 +16,8 @@ const Cart = () => {
   }
 
   return (
-    <div className='container mt-4'>
-      <h2 className='text-center lead fw-bolder'>
+    <div className='container'>
+      <h2 className='text-center fw-bolder py-4'>
         Your Carts ({carts.length})
       </h2>
       {!carts.length && (
@@ -92,4 +91,4 @@ const Cart = () => {
   )
 }
 
-export default Cart
+export default CartPage
