@@ -17,7 +17,7 @@ export const Header = () => {
         fixed='top'
         style={{ height: '80px' }}
       >
-        <Container>
+        <Container fluid='xl'>
           <Navbar.Brand className='fw-bold'>Online Shop</Navbar.Brand>
           <Navbar.Toggle aria-controls='basic-navbar-nav'></Navbar.Toggle>
           <Navbar.Collapse id='basic-navbar-nav'>
@@ -47,7 +47,7 @@ export const Header = () => {
 
                 <Nav.Link as={NavLink} to='/login'>
                   Login
-                  <i class='fa-solid fa-user' />
+                  <i className='fa-solid fa-user' />
                 </Nav.Link>
 
                 {false && (
