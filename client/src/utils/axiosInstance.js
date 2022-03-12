@@ -17,13 +17,14 @@ axiosInstance.interceptors.request.use(async req => {
     req.headers.Authorization = `Bearer ${ac_token}`
   }
 
-  const user = jwt_decode(authToken)
+  const user = jwt_decode(ac_token)
   const isExpired = dayjs.unix(user.exp).diff(dayjs()) < 1
 
   if (!isExpired) return req
-  const { data } = await axios.get(`${baseURL}/auth/refresh`, {
+  const { data } = await axios.get(`http://localhost:8888/api/auth/refresh`, {
     withCredentials: true,
   })
+
   localStorage.setItem('ac_token', data.ac_token)
   req.headers.Authorization = `Bearer ${data.ac_token}`
   return req

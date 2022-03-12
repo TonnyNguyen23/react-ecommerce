@@ -1,11 +1,19 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Nav, Container, Navbar, NavDropdown } from 'react-bootstrap'
+
+import { authSelector } from '../redux/selectors'
+import { logout } from '../redux/slices/authSlice'
 
 export const Header = () => {
   const carts = useSelector(state => state.carts)
-  // console.log(carts);
+  const { token, user } = useSelector(authSelector)
+
+  const dispatch = useDispatch()
+  const handleLogout = () => {
+    dispatch(logout())
+  }
   return (
     <header>
       <Navbar
@@ -45,35 +53,28 @@ export const Header = () => {
                   {carts.length})
                 </Nav.Link>
 
-                <Nav.Link as={NavLink} to='/login'>
-                  Login
-                  <i className='fa-solid fa-user' />
-                </Nav.Link>
-
-                {false && (
-                  <NavDropdown title='minh' id='username'>
+                {!token ? (
+                  <Nav.Link as={NavLink} to='/login'>
+                    Login
+                    <i className='fa-solid fa-user' />
+                  </Nav.Link>
+                ) : (
+                  <NavDropdown title={user.name} id='username'>
                     <NavDropdown.Item to='/profile'>Profile</NavDropdown.Item>
 
-                    <NavDropdown.Item
-                      onClick={() => console.log('logoutHandler')}
-                    >
+                    <NavDropdown.Item onClick={handleLogout}>
                       Logout
                     </NavDropdown.Item>
                   </NavDropdown>
                 )}
               </div>
 
-              {false && false === 'admin' && (
+              {!token && user.role === 'admin' && (
                 <NavDropdown title='Admin' id='adminmenu'>
-                  <NavDropdown.Item to='/admin/userlist'>
-                    Users
+                  <NavDropdown.Item to='/dashboards'>
+                    Dashboards
                   </NavDropdown.Item>
-
-                  <NavDropdown.Item to='/admin/productlist'>
-                    Products
-                  </NavDropdown.Item>
-
-                  <NavDropdown.Item to='/admin/orderlist'>
+                  <NavDropdown.Item to='/dashboards/order'>
                     Orders
                   </NavDropdown.Item>
                 </NavDropdown>

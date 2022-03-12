@@ -10,6 +10,7 @@ import { Message } from '../component/Message'
 import { useDispatch, useSelector } from 'react-redux'
 import { authReset, login } from '../redux/slices/authSlice'
 import { authSelector } from '../redux/selectors'
+import axiosInstance from '../utils/axiosInstance'
 
 const loginSchema = yup.object({
   email: yup.string().email().required().label('Email'),
@@ -18,7 +19,19 @@ const loginSchema = yup.object({
 
 export const SignInPage = () => {
   const initialValues = { email: '', password: '' }
-  const { loading, error } = useSelector(authSelector)
+  const { loading, error, token } = useSelector(authSelector)
+
+  useEffect(() => {
+    const getProfile = async () => {
+      const data = await axiosInstance.get(
+        'http://localhost:8888/api/users/profile'
+      )
+      console.log({ data })
+    }
+
+    !!token && getProfile()
+  }, [token])
+
   const dispatch = useDispatch()
   const onSubmit = data => {
     dispatch(login(data.email, data.password))

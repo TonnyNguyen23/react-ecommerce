@@ -42,6 +42,22 @@ const authSlice = createSlice({
     authReset: () => {
       return {}
     },
+    logoutRequest: state => {
+      state.loading = true
+    },
+    logoutSuccess: () => {
+      return {
+        token: '',
+        user: '',
+        error: '',
+        loading: false,
+        success: '',
+      }
+    },
+    logoutFail: (state, { payload }) => {
+      state.loading = false
+      state.error = payload
+    },
   },
 })
 
@@ -52,9 +68,11 @@ export const authReset = authActions.authReset
 export const login = (email, password) => async dispatch => {
   try {
     dispatch(authActions.loginRequest())
-    const data = await authApi.login(email, password)
-    dispatch(authActions.loginSuccess(data))
-    localStorage.setItem('ac_token', data.ac_token)
+    const { ac_token } = await authApi.login(email, password)
+    const user = jwt_decoded(ac_token)
+
+    dispatch(authActions.loginSuccess({ ac_token, user }))
+    localStorage.setItem('ac_token', ac_token)
   } catch (error) {
     dispatch(authActions.loginFail(error))
   }
@@ -63,11 +81,24 @@ export const login = (email, password) => async dispatch => {
 export const register = data => async dispatch => {
   try {
     dispatch(authActions.registerRequest())
-    const res = await authApi.register(data)
-    dispatch(authActions.registerSuccess(res))
-    localStorage.setItem('ac_token', res.ac_token)
+    const { ac_token } = await authApi.register(data)
+    const user = jwt_decoded(ac_token)
+
+    localStorage.setItem('ac_token', ac_token)
+    dispatch(authActions.registerSuccess({ ac_token, user }))
   } catch (error) {
     dispatch(authActions.registerFail(error))
+  }
+}
+
+export const logout = () => async dispatch => {
+  try {
+    dispatch(authActions.logoutRequest())
+    await authApi.logout()
+    localStorage.removeItem('ac_token')
+    dispatch(authActions.logoutSuccess())
+  } catch (error) {
+    dispatch(authActions.logoutFail(error))
   }
 }
 
