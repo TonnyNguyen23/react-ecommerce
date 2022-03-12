@@ -1,10 +1,8 @@
-import React from 'react'
-
-import { Breadcrumb, Modal, Container, Row, Stack } from 'react-bootstrap'
+import { Breadcrumb, Container, Row, Stack, Col } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { ProductsDashboard } from '../component/ProductsDashboard'
 import { SearchProduct } from '../component/SearchInputProduct'
-import { UsersTable } from '../component/UsersTable'
+import { UsersDashboard } from '../component/UsersDashboard'
 
 export const DashboardPage = () => {
   return (
@@ -19,10 +17,8 @@ export const DashboardPage = () => {
               </Breadcrumb.Item>
             </LinkContainer>
 
-            <LinkContainer to='/'>
-              <Breadcrumb.Item active to='/dashboards'>
-                Dashboards
-              </Breadcrumb.Item>
+            <LinkContainer to='/admin'>
+              <Breadcrumb.Item active>admin</Breadcrumb.Item>
             </LinkContainer>
           </Breadcrumb>
         </div>
@@ -33,7 +29,9 @@ export const DashboardPage = () => {
 
       <Row>
         {/* Users */}
-        <UsersTable />
+        <Col md={6} className='pe-4'>
+          <UsersDashboard />
+        </Col>
 
         {/* Products */}
         <ProductsDashboard />

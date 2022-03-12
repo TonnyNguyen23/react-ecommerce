@@ -7,7 +7,7 @@ import * as yup from 'yup'
 import { FormikControl } from '../component/FormikControl'
 import { Message } from '../component/Message'
 
-import { authReset, register } from '../redux/slices/authSlice'
+import { authResetError, register } from '../redux/slices/authSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { authSelector } from '../redux/selectors'
 
@@ -28,9 +28,9 @@ export const SignUpPage = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(authReset())
+      dispatch(authResetError())
     }
-  }, [])
+  }, [dispatch])
   return (
     <Container>
       <Row>

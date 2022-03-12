@@ -8,13 +8,13 @@ export const authApi = {
     return new Promise(async (resolve, reject) => {
       axios
         .post(`${BASE_URL}/auth/register`, data, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           withCredentials: true,
         })
         .then(({ data }) => resolve(data))
-        .catch(err => reject(err.response ? err.response.data.error : err))
+        .catch(err =>
+          reject(err.response ? err.response.data.error : err.message)
+        )
     })
   },
 
@@ -22,35 +22,28 @@ export const authApi = {
     return new Promise(async (resolve, reject) => {
       axios
         .post(
-          `http://localhost:8888/api/auth/login`,
+          `${BASE_URL}/auth/login`,
           { email, password },
           {
-            headers: {
-              'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             withCredentials: true,
           }
         )
         .then(({ data }) => resolve(data))
-        .catch(err => reject(err.response ? err.response.data.error : err))
+        .catch(err =>
+          reject(err.response ? err.response.data.error : err.message)
+        )
     })
   },
 
   logout() {
     return new Promise(async (resolve, reject) => {
       axiosInstance
-        .post(
-          `http://localhost:8888/api/auth//logout`,
-          {},
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            withCredentials: true,
-          }
-        )
+        .post(`${BASE_URL}/auth/logout`, {}, { withCredentials: true })
         .then(({ data }) => resolve(data))
-        .catch(err => reject(err.response ? err.response.data.error : err))
+        .catch(err =>
+          reject(err.response ? err.response.data.error : err.message)
+        )
     })
   },
 }

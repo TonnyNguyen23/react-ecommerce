@@ -27,7 +27,7 @@ export const NewProductPage = () => {
       <Row>
         <Stack direction='horizontal' gap={2}>
           <div className='heading py-3 '>
-            <h3 className='fw-bold'>Dashboards</h3>
+            <h3 className='fw-bold'>admin</h3>
             {/* Breadcrumb */}
             <Breadcrumb>
               <LinkContainer to='/'>
@@ -36,14 +36,14 @@ export const NewProductPage = () => {
                 </Breadcrumb.Item>
               </LinkContainer>
 
-              <LinkContainer to='/dashboards'>
-                <Breadcrumb.Item>Dashboards</Breadcrumb.Item>
+              <LinkContainer to='/admin'>
+                <Breadcrumb.Item>admin</Breadcrumb.Item>
               </LinkContainer>
-              <LinkContainer to='/dashboards'>
+              <LinkContainer to='/admin'>
                 <Breadcrumb.Item>Products</Breadcrumb.Item>
               </LinkContainer>
               <LinkContainer to='/'>
-                <Breadcrumb.Item active to='/dashboards'>
+                <Breadcrumb.Item active to='/admin'>
                   new
                 </Breadcrumb.Item>
               </LinkContainer>

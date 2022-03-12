@@ -1,72 +1,59 @@
 import { useState } from 'react'
-import { Col, Modal, Table, Button, Pagination } from 'react-bootstrap'
+import { Modal, Table, Button } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 
-export const UsersTable = () => {
+import UserRow from './UserRow'
+
+export const UsersTable = ({ users }) => {
   const [showModal, setShowModal] = useState(false)
+  const [deleteUserId, setDeleteUserId] = useState('')
+  const navigate = useNavigate()
+
   const handleCloseModal = () => setShowModal(false)
-  const handleShowModal = () => {
+
+  const handleNavigateEditUser = userId => {
+    navigate(`/admin/users/${userId}/edit`)
+  }
+
+  const handleShowModalDelete = userId => {
+    setDeleteUserId(userId)
     setShowModal(true)
   }
+
   const deleteUserHandler = () => {
-    // dispatch(deleteUser(userId))
+    console.log(deleteUserId)
     setShowModal(false)
   }
 
   return (
     <>
-      <Col md={6} className='pe-4'>
-        {/* Heading */}
-        <h5 className='text-primary'>
-          Users <small style={{ fontSize: '12px', color: 'red' }}>(20)</small>
-        </h5>
-        {/* Table */}
-        <Table size='sm'>
-          <thead className='table-dark'>
-            <tr>
-              <th>#</th>
-              <th> Date Created</th>
-              <th> Role</th>
-              <th> Action </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>
-                <Button className='btn btn-sm me-2' variant='light'>
-                  <i className='fa fa-cog text-primary'></i>
-                </Button>
-                <Button
-                  className='btn btn-sm'
-                  variant='light'
-                  onClick={handleShowModal}
-                >
-                  <i className='fa fa-times-circle text-danger'></i>
-                </Button>
-              </td>
-            </tr>
-          </tbody>
-        </Table>
-        {/* Pagination */}
-        <Pagination className='d-flex justify-content-end' size='sm'>
-          <Pagination.Item>1</Pagination.Item>
-          <Pagination.Item>2</Pagination.Item>
-          <Pagination.Item>3</Pagination.Item>
-          <Pagination.Item active>4</Pagination.Item>
-        </Pagination>
-      </Col>
-
+      <Table size='sm'>
+        <thead className='table-dark'>
+          <tr>
+            <th>#</th>
+            <th> Name</th>
+            <th> Date Created</th>
+            <th> Role</th>
+            <th> Action </th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map(user => (
+            <UserRow
+              key={user.id}
+              user={user}
+              onShowModalDelete={handleShowModalDelete}
+              onNavigateEditUser={handleNavigateEditUser}
+            />
+          ))}
+        </tbody>
+      </Table>
+      {/* Modal */}
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Body className='my-0 pt-3 pb-0'>
-          <p variant='danger'>Delete user #userId.</p>
+          <p variant='danger'>
+            Delete user <b>#{deleteUserId.slice(-3)}</b>.
+          </p>
         </Modal.Body>
 
         <Modal.Footer className='my-0 py-2'>

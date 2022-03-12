@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import { LinkContainer } from 'react-router-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { Nav, Container, Navbar, NavDropdown } from 'react-bootstrap'
 
@@ -9,11 +10,12 @@ import { logout } from '../redux/slices/authSlice'
 export const Header = () => {
   const carts = useSelector(state => state.carts)
   const { token, user } = useSelector(authSelector)
-
   const dispatch = useDispatch()
+
   const handleLogout = () => {
     dispatch(logout())
   }
+
   return (
     <header>
       <Navbar
@@ -26,7 +28,9 @@ export const Header = () => {
         style={{ height: '80px' }}
       >
         <Container fluid='xl'>
-          <Navbar.Brand className='fw-bold'>Online Shop</Navbar.Brand>
+          <LinkContainer to='/'>
+            <Navbar.Brand className='fw-bold'>Online Shop</Navbar.Brand>
+          </LinkContainer>
           <Navbar.Toggle aria-controls='basic-navbar-nav'></Navbar.Toggle>
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='d-flex w-100 '>
@@ -60,8 +64,9 @@ export const Header = () => {
                   </Nav.Link>
                 ) : (
                   <NavDropdown title={user.name} id='username'>
-                    <NavDropdown.Item to='/profile'>Profile</NavDropdown.Item>
-
+                    <LinkContainer to='/profile'>
+                      <NavDropdown.Item>Profile</NavDropdown.Item>
+                    </LinkContainer>
                     <NavDropdown.Item onClick={handleLogout}>
                       Logout
                     </NavDropdown.Item>
@@ -69,14 +74,12 @@ export const Header = () => {
                 )}
               </div>
 
-              {!token && user.role === 'admin' && (
+              {!!token && user.role === 'admin' && (
                 <NavDropdown title='Admin' id='adminmenu'>
-                  <NavDropdown.Item to='/dashboards'>
-                    Dashboards
-                  </NavDropdown.Item>
-                  <NavDropdown.Item to='/dashboards/order'>
-                    Orders
-                  </NavDropdown.Item>
+                  <LinkContainer to='/admin'>
+                    <NavDropdown.Item>Dashboards</NavDropdown.Item>
+                  </LinkContainer>
+                  <NavDropdown.Item to='/admin/order'>Orders</NavDropdown.Item>
                 </NavDropdown>
               )}
             </Nav>

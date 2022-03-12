@@ -16,7 +16,6 @@ axiosInstance.interceptors.request.use(async req => {
     ac_token = localStorage.getItem('ac_token')
     req.headers.Authorization = `Bearer ${ac_token}`
   }
-
   const user = jwt_decode(ac_token)
   const isExpired = dayjs.unix(user.exp).diff(dayjs()) < 1
 

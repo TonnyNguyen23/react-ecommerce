@@ -1,106 +1,106 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { profileSelector } from '../redux/selectors'
+import { getProfile } from '../redux/slices/profileSlice'
+import { Message } from '../component/Message'
+import { Spinner } from 'react-bootstrap'
 
-const ProfilePage = () => {
+export const ProfilePage = () => {
+  const { user, loading, error } = useSelector(profileSelector)
+  const [data, setData] = useState()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    !user && dispatch(getProfile())
+  }, [dispatch, user])
+
+  const handleInputChange = e => {
+    const input = e.target
+    setData({ ...data, [input.name]: input.value })
+  }
+
   return (
     <>
-      <div className="container">
-        <div className="row">
-          <div className="col-md-3">
-            <h3 className="py-3 heading">User Profile</h3>
+      <div className='container'>
+        <div className='row'>
+          <div className='col-md-3'>
+            <h3 className='py-3 heading'>User Profile</h3>
 
-            <div className="mb-3">
-              <label for="" className="form-label">
-                Full name
-              </label>
-              <input
-                type="email"
-                className="form-control"
-                id=""
-                placeholder=""
-              />
-            </div>
+            {loading ? (
+              <Spinner animation='border' role='status'>
+                <span className='visually-hidden'>Loading...</span>
+              </Spinner>
+            ) : !!error ? (
+              <Message variant='danger'>{error}</Message>
+            ) : (
+              user && (
+                <>
+                  <div className='mb-3'>
+                    <label className='form-label'>Full name</label>
+                    <input
+                      type='text'
+                      value={user.name}
+                      className='form-control'
+                      onChange={handleInputChange}
+                      name='name'
+                    />
+                  </div>
 
-            <div className="mb-3">
-              <label for="" className="form-label">
-                Email
-              </label>
-              <input
-                type="email"
-                className="form-control"
-                id=""
-                placeholder=""
-              />
-            </div>
+                  <div className='mb-3'>
+                    <label className='form-label'>Email</label>
+                    <input
+                      type='email'
+                      value={user.email}
+                      className='form-control'
+                      onChange={handleInputChange}
+                      name='email'
+                      placeholder=''
+                    />
+                  </div>
 
-            <div className="mb-3">
-              <label for="" className="form-label">
-                Phone
-              </label>
-              <input
-                type="email"
-                className="form-control"
-                id=""
-                placeholder=""
-              />
-            </div>
+                  <div className='mb-3'>
+                    <label className='form-label'>Phone</label>
+                    <input
+                      type='number'
+                      value={user?.phone}
+                      className='form-control'
+                      onChange={handleInputChange}
+                      name='phone'
+                      placeholder=''
+                    />
+                  </div>
 
-            <div className="mb-3">
-              <label for="" className="form-label">
-                Date of birth
-              </label>
-              <input type="date" className="form-control" id="" />
-            </div>
-
-            <div className="gender mb-3">
-              <div className="">
-                <label for="" className="form-label">
-                  Gender
-                </label>
-              </div>
-
-              <span className="pe-4">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="flexRadioDefault"
-                  id="male"
-                />
-                <label className="form-check-label ps-2" for="male">
-                  Male
-                </label>
-              </span>
-
-              <span>
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="flexRadioDefault"
-                  id="female"
-                  checked
-                />
-                <label className="form-check-label ps-2" for="female">
-                  Female
-                </label>
-              </span>
-            </div>
-            <button type="button" class="btn btn-primary">
-              Update
-            </button>
+                  <div className='mb-3'>
+                    <label className='form-label'>Date of birth</label>
+                    <input
+                      type='date'
+                      value={user?.birthday}
+                      className='form-control'
+                      onChange={handleInputChange}
+                      name='birthday'
+                      id=''
+                    />
+                  </div>
+                  <button type='button' className='btn btn-primary'>
+                    Update
+                  </button>
+                </>
+              )
+            )}
           </div>
 
-          <div className="col-9">
-            <h3 className="py-3 heading">My Orders</h3>
+          <div className='col-9'>
+            <h3 className='py-3 heading'>My Orders</h3>
 
-            <table class="table table-bordered">
+            <table className='table table-bordered'>
               <thead>
                 <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">DATE</th>
-                  <th scope="col">TOTAL</th>
-                  <th scope="col">PAID</th>
-                  <th scope="col">DELIVERED</th>
-                  <th scope="col"></th>
+                  <th scope='col'>ID</th>
+                  <th scope='col'>DATE</th>
+                  <th scope='col'>TOTAL</th>
+                  <th scope='col'>PAID</th>
+                  <th scope='col'>DELIVERED</th>
+                  <th scope='col'></th>
                 </tr>
               </thead>
               <tbody>
@@ -126,7 +126,5 @@ const ProfilePage = () => {
         </div>
       </div>
     </>
-  );
-};
-
-export default ProfilePage;
+  )
+}

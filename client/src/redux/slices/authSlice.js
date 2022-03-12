@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { authApi } from '../../api/authApi'
 import jwt_decoded from 'jwt-decode'
+import { profileActions } from './profileSlice'
 
 const token = localStorage.getItem('ac_token') || ''
 const user = token ? jwt_decoded(token) : ''
@@ -39,8 +40,8 @@ const authSlice = createSlice({
       state.loading = false
       state.error = payload
     },
-    authReset: () => {
-      return {}
+    authResetError: state => {
+      state.error = ''
     },
     logoutRequest: state => {
       state.loading = true
@@ -63,7 +64,7 @@ const authSlice = createSlice({
 
 const authActions = authSlice.actions
 
-export const authReset = authActions.authReset
+export const authResetError = authActions.authResetError
 
 export const login = (email, password) => async dispatch => {
   try {
@@ -91,12 +92,15 @@ export const register = data => async dispatch => {
   }
 }
 
-export const logout = () => async dispatch => {
+export const logout = () => async (dispatch, getState) => {
   try {
     dispatch(authActions.logoutRequest())
     await authApi.logout()
     localStorage.removeItem('ac_token')
     dispatch(authActions.logoutSuccess())
+    dispatch(profileActions.resetProfile())
+    const { profile } = getState()
+    console.log({ profile })
   } catch (error) {
     dispatch(authActions.logoutFail(error))
   }

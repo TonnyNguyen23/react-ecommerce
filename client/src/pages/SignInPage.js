@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { Button, Container, Row, Col, Form, Spinner } from 'react-bootstrap'
+
 import { Formik } from 'formik'
 import * as yup from 'yup'
 
@@ -8,9 +9,8 @@ import { FormikControl } from '../component/FormikControl'
 import { Message } from '../component/Message'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { authReset, login } from '../redux/slices/authSlice'
+import { authResetError, login } from '../redux/slices/authSlice'
 import { authSelector } from '../redux/selectors'
-import axiosInstance from '../utils/axiosInstance'
 
 const loginSchema = yup.object({
   email: yup.string().email().required().label('Email'),
@@ -21,27 +21,23 @@ export const SignInPage = () => {
   const initialValues = { email: '', password: '' }
   const { loading, error, token } = useSelector(authSelector)
 
-  useEffect(() => {
-    const getProfile = async () => {
-      const data = await axiosInstance.get(
-        'http://localhost:8888/api/users/profile'
-      )
-      console.log({ data })
-    }
-
-    !!token && getProfile()
-  }, [token])
-
+  const location = useLocation()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const redirect = location.search ? location.search.split('=')[1] : ''
+
   const onSubmit = data => {
     dispatch(login(data.email, data.password))
   }
 
   useEffect(() => {
+    !!token && navigate(`/${redirect}`)
+
     return () => {
-      dispatch(authReset())
+      dispatch(authResetError())
     }
-  }, [])
+  }, [token, redirect, dispatch, navigate])
 
   return (
     <Container>
