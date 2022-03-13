@@ -60,7 +60,7 @@ export const EditUserPage = () => {
       <Row>
         <Stack direction='horizontal' gap={2}>
           <div className='heading py-3 '>
-            <h3 className='fw-bold'>admin</h3>
+            <h3 className='fw-bold'>DashBoards</h3>
             {/* Breadcrumb */}
             <Breadcrumb>
               <LinkContainer to='/'>
@@ -70,7 +70,7 @@ export const EditUserPage = () => {
               </LinkContainer>
 
               <LinkContainer to='/admin'>
-                <Breadcrumb.Item>admin</Breadcrumb.Item>
+                <Breadcrumb.Item>Admin</Breadcrumb.Item>
               </LinkContainer>
               <LinkContainer to='/admin'>
                 <Breadcrumb.Item>Users</Breadcrumb.Item>

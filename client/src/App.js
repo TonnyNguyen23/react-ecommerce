@@ -48,7 +48,7 @@ function App() {
             }
           />
           <Route
-            path='/admin/newProduct'
+            path='/admin/products/new'
             element={
               <PrivateRoute>
                 <NewProductPage />
