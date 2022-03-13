@@ -1,27 +1,32 @@
 import { useState } from 'react'
 import { Modal, Table, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-
+import { useDispatch } from 'react-redux'
+import { deleteUser } from '../redux/slices/usersSlice'
 import UserRow from './UserRow'
 
 export const UsersTable = ({ users }) => {
   const [showModal, setShowModal] = useState(false)
   const [deleteUserId, setDeleteUserId] = useState('')
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const handleCloseModal = () => setShowModal(false)
 
+  // Navigate to editUserPage
   const handleNavigateEditUser = userId => {
     navigate(`/admin/users/${userId}/edit`)
   }
 
+  // Set deleteUserId and show modal delete
   const handleShowModalDelete = userId => {
     setDeleteUserId(userId)
     setShowModal(true)
   }
 
+  // Delete user on click button delete in modal
   const deleteUserHandler = () => {
-    console.log(deleteUserId)
+    dispatch(deleteUser(deleteUserId))
     setShowModal(false)
   }
 

@@ -27,8 +27,17 @@ const usersSlice = createSlice({
       state.error = payload
     },
 
-    updateUser(state, { payload }) {
-      state.users = payload
+    deleteUserRequest(state) {
+      state.loading = true
+    },
+    deleteUserSuccess(state, { payload }) {
+      state.loading = false
+      state.error = ''
+      state.users = state.users.filter(user => user.id !== payload)
+    },
+    deleteUserFail(state, { payload }) {
+      state.loading = false
+      state.error = payload
     },
 
     resetUsers() {
@@ -39,13 +48,24 @@ const usersSlice = createSlice({
 
 export const usersAction = usersSlice.actions
 
-export const getUsers = () => async dispatch => {
+export const getUsers = search => async dispatch => {
   try {
     dispatch(usersAction.getUsersRequest())
-    const data = await userApi.getUsers()
+    const data = await userApi.getUsers(search)
     dispatch(usersAction.getUsersSuccess(data))
   } catch (error) {
     dispatch(usersAction.getUsersFail(error))
+  }
+}
+
+export const deleteUser = userId => async dispatch => {
+  try {
+    dispatch(usersAction.deleteUserRequest())
+    await userApi.deleteUser(userId)
+    dispatch(usersAction.deleteUserSuccess(userId))
+    // dispatch(getUsers())
+  } catch (error) {
+    dispatch(usersAction.deleteUserFail(error))
   }
 }
 

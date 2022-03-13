@@ -24,15 +24,15 @@ export const SignInPage = () => {
   const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
-  const redirect = location.search ? location.search.split('=')[1] : ''
+  console.log({ location })
+  const redirect = location.state?.path || '/'
 
   const onSubmit = data => {
     dispatch(login(data.email, data.password))
   }
 
   useEffect(() => {
-    !!token && navigate(`/${redirect}`)
+    !!token && navigate(`${redirect}`)
 
     return () => {
       dispatch(authResetError())

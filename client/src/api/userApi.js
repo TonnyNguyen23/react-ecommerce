@@ -24,10 +24,11 @@ export const userApi = {
     })
   },
 
-  getUsers() {
+  getUsers(search = '?page=1&limit=1') {
+    console.log({ search })
     return new Promise(async (resolve, reject) => {
       axiosInstance
-        .get(`${BASE_URL}/users`)
+        .get(`${BASE_URL}/users${search}`)
         .then(({ data }) => resolve(data))
         .catch(err =>
           reject(err.response ? err.response.data.error : err.message)
@@ -51,7 +52,7 @@ export const userApi = {
   deleteUser(userId) {
     return new Promise(async (resolve, reject) => {
       axiosInstance
-        .patch(`${BASE_URL}/users/${userId}`)
+        .delete(`${BASE_URL}/users/${userId}`)
         .then(({ data }) => resolve(data))
         .catch(err =>
           reject(err.response ? err.response.data.error : err.message)

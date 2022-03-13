@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Button, Container, Row, Col, Form, Spinner } from 'react-bootstrap'
 import { Formik } from 'formik'
 import * as yup from 'yup'
@@ -19,18 +19,21 @@ const registerSchema = yup.object({
 
 export const SignUpPage = () => {
   const initialValues = { email: '', password: '', name: '' }
-  const { error, loading } = useSelector(authSelector)
+  const { error, loading, token } = useSelector(authSelector)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const onSubmit = data => {
     dispatch(register(data))
   }
 
   useEffect(() => {
+    !!token && navigate(`/`)
+
     return () => {
       dispatch(authResetError())
     }
-  }, [dispatch])
+  }, [dispatch, token, navigate])
   return (
     <Container>
       <Row>
