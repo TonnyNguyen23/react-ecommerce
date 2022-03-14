@@ -12,6 +12,7 @@ import { authReducer } from './slices/authSlice'
 import { productReducer } from './slices/productSlice'
 import { productsReducer } from './slices/productsSlice'
 import { profileReducer } from './slices/profileSlice'
+import { shippingReducer } from './slices/shippingSlice'
 import { userReducer } from './slices/userSlice'
 import { usersReducer } from './slices/usersSlice'
 
@@ -23,6 +24,7 @@ const store = configureStore({
     auth: authReducer,
     users: usersReducer,
     user: userReducer,
+    shipping: shippingReducer,
     carts: cartReducer,
   },
 })
