@@ -16,6 +16,7 @@ const queryProducts = async (filter, options) => {
     totalDocs: 'totalProducts',
   }
   options = { ...options, customLabels }
+  filter = { ...filter, title: new RegExp(filter.title, 'ig') }
   const products = await Product.paginate(filter, options)
   return products
 }
