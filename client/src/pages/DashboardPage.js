@@ -1,7 +1,7 @@
 import { Breadcrumb, Container, Row, Stack, Col } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
+import { OrdersDashboard } from '../component/OrdersDashboard'
 import { ProductsDashboard } from '../component/ProductsDashboard'
-import { SearchProduct } from '../component/SearchInputProduct'
 import { UsersDashboard } from '../component/UsersDashboard'
 
 export const DashboardPage = () => {
@@ -22,19 +22,23 @@ export const DashboardPage = () => {
             </LinkContainer>
           </Breadcrumb>
         </div>
-        <div className='ms-auto'>
-          <SearchProduct />
-        </div>
       </Stack>
 
       <Row>
+        {/* Orders */}
+        <Col md={6} className='pe-4'>
+          <OrdersDashboard />
+        </Col>
+
         {/* Users */}
         <Col md={6} className='pe-4'>
           <UsersDashboard />
         </Col>
-
+        <hr />
         {/* Products */}
-        <ProductsDashboard />
+        <Col md={12} className='mt-5'>
+          <ProductsDashboard />
+        </Col>
       </Row>
     </Container>
   )

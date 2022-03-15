@@ -29,11 +29,13 @@ export const SignUpPage = () => {
 
   useEffect(() => {
     !!token && navigate(`/`)
-
-    return () => {
-      dispatch(authResetError())
-    }
   }, [dispatch, token, navigate])
+
+  useEffect(() => {
+    return () => {
+      !!error && dispatch(authResetError())
+    }
+  }, [dispatch, error])
   return (
     <Container>
       <Row>

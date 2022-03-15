@@ -37,8 +37,7 @@ export const productApi = {
         )
     })
   },
-
-  updateUser(productId, productBody) {
+  updateProduct(productId, productBody) {
     return new Promise(async (resolve, reject) => {
       axiosInstance
         .patch(`${BASE_URL}/products/${productId}`, productBody, {
@@ -51,10 +50,10 @@ export const productApi = {
     })
   },
 
-  deleteUser(productId) {
+  deleteProduct(productId) {
     return new Promise(async (resolve, reject) => {
       axiosInstance
-        .delete(`${BASE_URL}/users/${productId}`)
+        .delete(`${BASE_URL}/products/${productId}`)
         .then(({ data }) => resolve(data))
         .catch(err =>
           reject(err.response ? err.response.data.error : err.message)

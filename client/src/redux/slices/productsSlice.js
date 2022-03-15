@@ -32,14 +32,17 @@ const productsSlice = createSlice({
     },
     deleteProductSuccess(state, { payload }) {
       state.loading = false
-      state.error = ''
       state.products = state.products.filter(product => product.id !== payload)
+      state.error = ''
+      state.success = 'Delete product success!'
     },
     deleteProductFail(state, { payload }) {
       state.loading = false
       state.error = payload
     },
-
+    resetProductsSuccess(state) {
+      state.success = ''
+    },
     resetProducts() {
       return initialState
     },
@@ -47,6 +50,7 @@ const productsSlice = createSlice({
 })
 
 export const productsAction = productsSlice.actions
+export const resetProductsSuccess = productsAction.resetProductsSuccess
 
 export const getProducts = search => async dispatch => {
   try {
@@ -63,7 +67,6 @@ export const deleteProduct = productId => async dispatch => {
     dispatch(productsAction.deleteProductRequest())
     await productApi.deleteProduct(productId)
     dispatch(productsAction.deleteProductSuccess(productId))
-    // dispatch(getProducts())
   } catch (error) {
     dispatch(productsAction.deleteProductFail(error))
   }

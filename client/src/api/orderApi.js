@@ -1,21 +1,12 @@
+import axios from 'axios'
 import axiosInstance from '../utils/axiosInstance'
 import { BASE_URL } from '../utils/contants'
 
-export const userApi = {
-  getProfile() {
+export const orderApi = {
+  createOrder(order) {
     return new Promise(async (resolve, reject) => {
       axiosInstance
-        .get(`${BASE_URL}/users/profile`)
-        .then(({ data }) => resolve(data))
-        .catch(err =>
-          reject(err.response ? err.response.data.error : err.message)
-        )
-    })
-  },
-  updateProfile(userBody) {
-    return new Promise(async (resolve, reject) => {
-      axiosInstance
-        .patch(`${BASE_URL}/users/profile`, userBody, {
+        .post(`${BASE_URL}/orders`, order, {
           headers: { 'Content-Type': 'application/json' },
         })
         .then(({ data }) => resolve(data))
@@ -25,10 +16,10 @@ export const userApi = {
     })
   },
 
-  getUser(userId) {
+  getMyOrders() {
     return new Promise(async (resolve, reject) => {
       axiosInstance
-        .get(`${BASE_URL}/users/${userId}`)
+        .get(`${BASE_URL}/orders/myOrders`)
         .then(({ data }) => resolve(data))
         .catch(err =>
           reject(err.response ? err.response.data.error : err.message)
@@ -36,10 +27,10 @@ export const userApi = {
     })
   },
 
-  getUsers(search = '?page=1&limit=1') {
+  getOrder(orderId) {
     return new Promise(async (resolve, reject) => {
       axiosInstance
-        .get(`${BASE_URL}/users${search}`)
+        .get(`${BASE_URL}/orders/${orderId}`)
         .then(({ data }) => resolve(data))
         .catch(err =>
           reject(err.response ? err.response.data.error : err.message)
@@ -47,23 +38,10 @@ export const userApi = {
     })
   },
 
-  updateUser(userId, userBody) {
+  getOrders(search = '?page=1&limit=10') {
     return new Promise(async (resolve, reject) => {
       axiosInstance
-        .patch(`${BASE_URL}/users/${userId}`, userBody, {
-          headers: { 'Content-Type': 'application/json' },
-        })
-        .then(({ data }) => resolve(data))
-        .catch(err =>
-          reject(err.response ? err.response.data.error : err.message)
-        )
-    })
-  },
-
-  deleteUser(userId) {
-    return new Promise(async (resolve, reject) => {
-      axiosInstance
-        .delete(`${BASE_URL}/users/${userId}`)
+        .get(`${BASE_URL}/orders${search}`)
         .then(({ data }) => resolve(data))
         .catch(err =>
           reject(err.response ? err.response.data.error : err.message)

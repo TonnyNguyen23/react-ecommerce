@@ -58,10 +58,10 @@ export const EditUserPage = () => {
   return (
     <Container>
       <Row>
+        {/* Breadcrumb */}
         <Stack direction='horizontal' gap={2}>
           <div className='heading py-3 '>
             <h3 className='fw-bold'>DashBoards</h3>
-            {/* Breadcrumb */}
             <Breadcrumb>
               <LinkContainer to='/'>
                 <Breadcrumb.Item className='text-decoration-none'>
@@ -75,17 +75,15 @@ export const EditUserPage = () => {
               <LinkContainer to='/admin'>
                 <Breadcrumb.Item>Users</Breadcrumb.Item>
               </LinkContainer>
-              <LinkContainer to='/'>
-                <Breadcrumb.Item active to='/admin'>
-                  #a234aerdf34r
-                </Breadcrumb.Item>
-              </LinkContainer>
+              <Breadcrumb.Item active>#{userId}</Breadcrumb.Item>
             </Breadcrumb>
           </div>
         </Stack>
+
+        {/* Main */}
         <Col md={{ span: 6, offset: 3 }}>
           <h4 className='text-center heading'>
-            Update User: <b>minh chiucam</b>
+            Update User: <b>{user?.name}</b>
           </h4>
           {!!error && <Message variant='danger'>{error}</Message>}
           {/* Using formik */}
@@ -129,7 +127,7 @@ export const EditUserPage = () => {
                   max='2014-12-12'
                 />
                 <Form.Group className='mb-3'>
-                  <Form.Label>Birthday</Form.Label>
+                  <Form.Label>Role</Form.Label>
                   <Form.Select
                     name='role'
                     value={values.role}

@@ -9,6 +9,8 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { cartReducer } from './reducer/cartSlice'
 import { authReducer } from './slices/authSlice'
+import { orderReducer } from './slices/orderSlice'
+import { ordersReducer } from './slices/ordersSlice'
 import { productReducer } from './slices/productSlice'
 import { productsReducer } from './slices/productsSlice'
 import { profileReducer } from './slices/profileSlice'
@@ -18,6 +20,8 @@ import { usersReducer } from './slices/usersSlice'
 
 const store = configureStore({
   reducer: {
+    orders: ordersReducer,
+    order: orderReducer,
     products: productsReducer,
     product: productReducer,
     profile: profileReducer,

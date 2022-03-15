@@ -33,11 +33,13 @@ export const SignInPage = () => {
 
   useEffect(() => {
     !!token && navigate(`${redirect}`)
-
-    return () => {
-      dispatch(authResetError())
-    }
   }, [token, redirect, dispatch, navigate])
+
+  useEffect(() => {
+    return () => {
+      !!error && dispatch(authResetError())
+    }
+  }, [dispatch, error])
 
   return (
     <Container>

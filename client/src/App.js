@@ -15,8 +15,11 @@ import { EditUserPage } from './pages/EditUserPage'
 import { EditProductPage } from './pages/EditProductPage'
 import { NewProductPage } from './pages/NewProductPage'
 import { OrderPage } from './pages/OrderPage'
+import { OrderDetailsPage } from './pages/OrderDetailsPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 import { ShippingPage } from './pages/ShippingPage'
+import { Footer } from './component/Footer'
+
 function App() {
   return (
     <>
@@ -48,19 +51,20 @@ function App() {
               </PrivateRoute>
             }
           />
+
+          <Route
+            path='admin/products/:productId/edit'
+            element={
+              <PrivateRoute>
+                <EditProductPage />
+              </PrivateRoute>
+            }
+          />
           <Route
             path='/admin/products/new'
             element={
               <PrivateRoute>
                 <NewProductPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path='admin/editProduct/:id'
-            element={
-              <PrivateRoute>
-                <EditProductPage />
               </PrivateRoute>
             }
           />
@@ -72,17 +76,41 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route path='/shipping' element={<ShippingPage />} />
+          <Route
+            path='/shipping'
+            element={
+              <PrivateRoute>
+                <ShippingPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/orders'
+            element={
+              <PrivateRoute>
+                <OrderPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/orders/:id'
+            element={
+              <PrivateRoute>
+                <OrderDetailsPage />
+              </PrivateRoute>
+            }
+          />
           <Route path='/register' element={<SignUpPage />} />
           <Route path='/login' element={<SignInPage />} />
           <Route path='/products/:id' element={<ProductPage />} />
           <Route path='/products' element={<Products />} />
-          <Route path='/orders' element={<OrderPage />} />
           <Route path='/cart' element={<Carts />} />
           <Route index path='/' element={<Home />} />
           <Route path='*' element={<NotFoundPage />} />
         </Routes>
       </Container>
+
+      <Footer />
     </>
   )
 }

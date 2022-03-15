@@ -1,30 +1,28 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router'
 import { NavLink } from 'react-router-dom'
 import Skeleton from 'react-loading-skeleton'
 
+import { useDispatch, useSelector } from 'react-redux'
 import { cartActions } from '../redux/reducer/cartSlice'
+import { getProduct, resetProduct } from '../redux/slices/productSlice'
 
 const ProductPage = () => {
   const { id } = useParams()
-  const [product, setProduct] = useState({})
-  const [loading, setLoading] = useState(false)
-
+  const { product, loading } = useSelector(state => state.product)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getProduct(id))
+
+    return () => {
+      dispatch(resetProduct())
+    }
+  }, [dispatch, id])
+
   const addProduct = product => {
     dispatch(cartActions.addCart(product))
   }
-
-  useEffect(() => {
-    const getProduct = async () => {
-      setLoading(true)
-      const response = await fetch(`https://fakestoreapi.com/products/${id}`)
-      setProduct(await response.json())
-      setLoading(false)
-    }
-    getProduct()
-  }, [id])
 
   const Loading = () => {
     return (
@@ -83,7 +81,7 @@ const ProductPage = () => {
     <div>
       <div className='container py-5'>
         <div className='row py-4'>
-          {loading ? <Loading /> : <ShowProduct />}
+          {loading ? <Loading /> : product && <ShowProduct />}
         </div>
       </div>
     </div>

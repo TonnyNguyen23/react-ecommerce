@@ -14,11 +14,13 @@ export const UsersDashboard = () => {
   const { loading, error, info, users } = useSelector(usersSelector)
   const dispatch = useDispatch()
   const location = useLocation()
-  const search = location.search || '?page=1'
-
+  const search =
+    (location.pathname === '/admin/users' && location.search) || '?page=1'
   useEffect(() => {
-    dispatch(getUsers(search))
-  }, [dispatch, users.length, search])
+    if (!users?.length || !!search) {
+      dispatch(getUsers(search))
+    }
+  }, [dispatch, search, users?.length])
 
   return (
     <>

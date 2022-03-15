@@ -1,13 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { createOrder } from '../redux/slices/orderSlice'
+import { Message } from '../component/Message'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export const OrderPage = () => {
   const carts = useSelector(state => state.carts)
   const { shipping } = useSelector(state => state.shipping)
+
+  const { order, error, success } = useSelector(state => state.order)
   const [shippingPrice, setShippingPrice] = useState(0)
-  console.log({ carts, shipping })
   const dispatch = useDispatch()
+
+  console.log({ order, error, success })
+
   const handleOrder = () => {
     const cartItems = carts.map(cart => ({
       title: cart.title,
@@ -16,6 +24,13 @@ export const OrderPage = () => {
       image: cart.image,
       product: cart.id,
     }))
+
+    /**
+     * orderItems: [{title, qty, price, image, product}, ]
+     * shipping: { name, phone, address }
+     * totalPrice
+     * shippingPrice
+     */
     const orderItem = {
       orderItems: cartItems,
       shipping,
@@ -25,8 +40,23 @@ export const OrderPage = () => {
       ),
       shippingPrice,
     }
-    console.log({ cartItems })
+    dispatch(createOrder(orderItem))
   }
+
+  useEffect(() => {
+    if (!!success) {
+      toast.success(success, {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      })
+    }
+  }, [success])
+
   return (
     <div className='container'>
       <div className='row'>
@@ -37,7 +67,7 @@ export const OrderPage = () => {
           </div>
 
           <div className='row'>
-            <h4 className='mt-3 fw-bold'>Order</h4>
+            <h4 className='mt-3 fw-bold'>Cart</h4>
             <p>
               <span>Total Items: </span>
               <span className='text-primary'>({carts.length})</span>
@@ -84,6 +114,8 @@ export const OrderPage = () => {
               ))}
           </div>
         </div>
+
+        {/* Shipping Group */}
         <div className='col-4 offset-1'>
           <div className='row'>
             <h4 className='mt-5 fw-bold'>Shipping Address</h4>
@@ -93,13 +125,34 @@ export const OrderPage = () => {
             <b>Address</b>
             <p>{shipping.address}</p>
           </div>
+
           <div className='row'>
-            <button className='btn btn-block btn-dark' onClick={handleOrder}>
+            {!!error && <Message variant='danger'>{error}</Message>}
+          </div>
+
+          <div className='row'>
+            <button
+              disabled={!!success}
+              className='btn btn-block btn-dark'
+              onClick={handleOrder}
+            >
               Order
             </button>
           </div>
         </div>
       </div>
+
+      <ToastContainer
+        position='bottom-right'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   )
 }

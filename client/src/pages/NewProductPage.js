@@ -9,7 +9,6 @@ import {
   Spinner,
 } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
-import { useNavigate } from 'react-router-dom'
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import { ToastContainer, toast } from 'react-toastify'
@@ -71,9 +70,9 @@ export const NewProductPage = () => {
       })
     }
     return () => {
-      dispatch(resetProduct())
+      !!success && dispatch(resetProduct())
     }
-  }, [success])
+  }, [dispatch, success])
 
   return (
     <>

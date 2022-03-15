@@ -1,12 +1,9 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { shippingActions } from '../redux/slices/shippingSlice'
 
 export const ShippingPage = () => {
-  const shipping = useSelector(state => state.shipping)
-  console.log({ shipping })
-
   const dispatch = useDispatch()
   const [data, setData] = useState({
     name: '',
@@ -38,6 +35,7 @@ export const ShippingPage = () => {
           <h3 className='text-center py-3 heading fw-bold py-3 my-0 pt-5'>
             Shipping Address
           </h3>
+
           <form onSubmit={handleSubmit}>
             <div className='mb-3'>
               <label className='form-label'>Full Name</label>

@@ -1,30 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { NavLink } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { productsSelector } from '../redux/selectors'
+import { getProducts } from '../redux/slices/productsSlice'
 
 const Products = () => {
-  const [data, setData] = useState([])
-  const [filter, setFilter] = useState(data)
-  const [loading, setLoading] = useState(false)
-  let componentMounted = true
-
+  const { products, loading } = useSelector(productsSelector)
+  const [filter, setFilter] = useState(products)
+  const dispatch = useDispatch()
   useEffect(() => {
-    const getProducts = async () => {
-      setLoading(true)
-      const response = await fetch('https://fakestoreapi.com/products')
-      if (componentMounted) {
-        setData(await response.clone().json())
-        setFilter(await response.json())
-        setLoading(false)
-      }
-
-      return () => {
-        componentMounted = false
-      }
-    }
-
-    getProducts()
-  }, [])
+    !products.length && dispatch(getProducts())
+    setFilter(products)
+  }, [dispatch, products.length])
 
   const Loading = () => {
     return (
@@ -46,7 +34,7 @@ const Products = () => {
   }
 
   const filterProduct = cat => {
-    const updatedList = data.filter(x => x.category === cat)
+    const updatedList = products.filter(x => x.category === cat)
     setFilter(updatedList)
   }
 
@@ -56,7 +44,7 @@ const Products = () => {
         <div className='buttons d-flex justify-content-center mb-5 pb-5'>
           <button
             className='btn btn-outline-dark me-2'
-            onClick={() => setFilter(data)}
+            onClick={() => setFilter(products)}
           >
             All
           </button>

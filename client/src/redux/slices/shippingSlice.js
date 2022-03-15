@@ -7,6 +7,7 @@ const shippingSlice = createSlice({
   initialState,
   reducers: {
     createShipping: (state, action) => {
+      // action: {payload}
       state.shipping = action.payload
     },
     resetShipping: () => {
